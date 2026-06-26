@@ -1,0 +1,56 @@
+@prefix pacer: <http://scales-kg.org/pacer#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl:  <http://www.w3.org/2002/07/owl#> .
+
+pacer: a owl:Ontology ;
+    rdfs:label "PACER Knowledge Graph (property-graph → RDF mapping)" ;
+    rdfs:comment "Mirrors Neo4j labels/relationships as RDF classes and predicates." .
+
+# --- Classes (Neo4j node labels) ---
+pacer:Court            a owl:Class ; rdfs:label "Court" .
+pacer:Case              a owl:Class ; rdfs:label "Case" .
+pacer:Party             a owl:Class ; rdfs:label "Party" .
+pacer:Organization      a owl:Class ; rdfs:label "Organization" .
+pacer:Judge             a owl:Class ; rdfs:label "Judge" .
+pacer:Attorney          a owl:Class ; rdfs:label "Attorney" .
+pacer:ExternalCourtRef  a owl:Class ; rdfs:label "ExternalCourtRef" .
+pacer:DocketEntry       a owl:Class ; rdfs:label "DocketEntry" .
+
+# Reified relationship nodes (edge properties in Neo4j)
+pacer:PartyLink         a owl:Class ; rdfs:label "Case–party participation" .
+pacer:CounselLink       a owl:Class ; rdfs:label "Party–attorney representation" .
+pacer:RelatedCaseLink   a owl:Class ; rdfs:label "Related case link" .
+
+# --- Direct predicates (Neo4j relationships without properties) ---
+pacer:filedIn           a owl:ObjectProperty ; rdfs:label "filed in court" ;
+    rdfs:domain pacer:Case ; rdfs:range pacer:Court .
+pacer:assignedJudge     a owl:ObjectProperty ; rdfs:label "assigned judge" ;
+    rdfs:domain pacer:Case ; rdfs:range pacer:Judge .
+pacer:referredTo        a owl:ObjectProperty ; rdfs:label "referred to judge" ;
+    rdfs:domain pacer:Case ; rdfs:range pacer:Judge .
+pacer:leadCase          a owl:ObjectProperty ; rdfs:label "lead case" ;
+    rdfs:domain pacer:Case ; rdfs:range pacer:Case .
+pacer:appealIn          a owl:ObjectProperty ; rdfs:label "appeal in external court" ;
+    rdfs:domain pacer:Case ; rdfs:range pacer:ExternalCourtRef .
+pacer:hasDocketEntry    a owl:ObjectProperty ; rdfs:label "has docket entry" ;
+    rdfs:domain pacer:Case ; rdfs:range pacer:DocketEntry .
+
+# --- Reified link structure ---
+pacer:from              a owl:ObjectProperty ; rdfs:label "link source" .
+pacer:to                a owl:ObjectProperty ; rdfs:label "link target" .
+
+# --- Datatype properties (Neo4j node/edge properties) ---
+pacer:hasName           a owl:DatatypeProperty ; rdfs:label "name" .
+pacer:hasCode           a owl:DatatypeProperty ; rdfs:label "court code" .
+pacer:hasUcid           a owl:DatatypeProperty ; rdfs:label "case UCID" .
+pacer:hasCaseName       a owl:DatatypeProperty ; rdfs:label "case name" .
+pacer:hasCaseType       a owl:DatatypeProperty ; rdfs:label "case type (cr/cv)" .
+pacer:hasFilingDate     a owl:DatatypeProperty ; rdfs:label "filing date" .
+pacer:hasRole           a owl:DatatypeProperty ; rdfs:label "party role" .
+pacer:hasPartyType      a owl:DatatypeProperty ; rdfs:label "party type" .
+pacer:hasEmail          a owl:DatatypeProperty ; rdfs:label "attorney email" .
+pacer:hasOffice         a owl:DatatypeProperty ; rdfs:label "attorney office" .
+pacer:isCanonical       a owl:DatatypeProperty ; rdfs:label "canonical org flag" .
+pacer:isLead            a owl:DatatypeProperty ; rdfs:label "lead counsel" .
+pacer:isProSe           a owl:DatatypeProperty ; rdfs:label "pro se" .
+pacer:hasRawRef         a owl:DatatypeProperty ; rdfs:label "raw related-case ref" .
